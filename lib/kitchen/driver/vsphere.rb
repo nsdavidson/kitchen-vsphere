@@ -1,4 +1,5 @@
 require 'kitchen/driver/vsphere_version'
+require 'fog'
 
 module Kitchen
   module Driver
@@ -26,7 +27,10 @@ module Kitchen
       def create(state)
         return if state[:server_id]
         server = create_server
-        state[:server_id] = server
+        state[:server_id] = config["name"]
+
+        info("vSphere instance #{state[:server_id]} created.")
+        server.wait_for { print '.'; ready? }
       end
 
       def destroy(state)
@@ -42,6 +46,15 @@ module Kitchen
           :vsphere_password               => config[:vsphere_password],
           :vsphere_server                 => config[:vsphere_server],
           :vsphere_expected_pubkey_hash   => config[:vsphere_expected_pubkey_hash]
+        )
+      end
+
+      def create_server
+        connection.vm_clone(
+          'datacenter' => config[:datacenter],
+          'template_path' => config[:template_path],
+          'name' => config[:name],
+          'dest_folder' => config[:destination_folder]
         )
       end
     end
