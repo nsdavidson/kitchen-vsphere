@@ -1,16 +1,19 @@
 require 'kitchen/driver/vsphere_version'
 require 'fog'
+require 'kitchen'
+
 
 module Kitchen
   module Driver
     # vSphere driver for Test Kitchen
     # @author Nolan Davidson <nolan.davidon@gmail.com>
-    class Vsphere
+    class Vsphere < Kitchen::Driver::SSHBase
 
       default_config :datacenter
       default_config :template_name
       default_config :template_path, 'Templates'
       default_config :destination_folder
+      default_config :vm_name
       default_config :vsphere_server do |driver|
         ENV['VSPHERE_SERVER']
       end
@@ -30,7 +33,7 @@ module Kitchen
         state[:server_id] = config["name"]
 
         info("vSphere instance #{state[:server_id]} created.")
-        server.wait_for { print '.'; ready? }
+        #server.wait_for { print '.'; ready? }
       end
 
       def destroy(state)
@@ -52,8 +55,8 @@ module Kitchen
       def create_server
         connection.vm_clone(
           'datacenter' => config[:datacenter],
-          'template_path' => config[:template_path],
-          'name' => config[:name],
+          'template_path' => "#{config[:template_path]}/#{config[:template_name]}",
+          'name' => config[:vm_name],
           'dest_folder' => config[:destination_folder]
         )
       end

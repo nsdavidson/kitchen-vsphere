@@ -20,6 +20,8 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'test-kitchen', '~> 1.0'
   spec.add_dependency 'fog'
+  spec.add_dependency 'nokogiri', '1.5.5'
+  spec.add_dependency 'rbvmomi', '1.6.0'
 
   spec.add_development_dependency 'bundler', '~> 1.3'
   spec.add_development_dependency 'rake'
