@@ -8,7 +8,7 @@ module Kitchen
     # vSphere driver for Test Kitchen
     # @author Nolan Davidson <nolan.davidon@gmail.com>
     class Vsphere < Kitchen::Driver::SSHBase
-
+      # Set up default config settings
       default_config :datacenter
       default_config :template_name
       default_config :template_path, 'Templates'

@@ -1,6 +1,6 @@
-# Kitchen::Vsphere
+# kitchen-vsphere
 
-TODO: Write a gem description
+Provides a driver for spinning up Test Kitchen instances on VMware vSphere.
 
 ## Installation
 
